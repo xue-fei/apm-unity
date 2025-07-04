@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AudioProcessingModuleCs.Media.Dsp.WebRtc
+namespace Apm.Media.Dsp.WebRtc
 {
 	public class NoiseSuppressor
 	{

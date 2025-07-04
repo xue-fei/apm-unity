@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AudioProcessingModuleCs.Media.Dsp
+namespace Apm.Media.Dsp
 {
 	/// <summary>
 	/// A workable base class for a wide range of echo cancellation algorithms.

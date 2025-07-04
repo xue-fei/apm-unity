@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AudioProcessingModuleCs.Media.Dsp
+namespace Apm.Media.Dsp
 {
 	public class DspHelper
 	{

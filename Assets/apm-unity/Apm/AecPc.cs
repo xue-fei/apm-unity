@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AudioProcessingModuleCs.Media.Dsp.WebRtc
+namespace Apm.Media.Dsp.WebRtc
 {
 	/// <summary>
 	/// ks 9/26/11 - This class isn't used in our current AEC, as it solves problems that we've solved in a more generalizable fashion.

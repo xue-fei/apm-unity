@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System;
 
-namespace AudioProcessingModuleCs.Media.Dsp
+namespace Apm.Media.Dsp
 {
 	public class EchoCancelFilterLogger
 	{

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AudioProcessingModuleCs.Media
+namespace Apm.Media
 {
 	public class AudioFormat : IEquatable<AudioFormat>
 	{

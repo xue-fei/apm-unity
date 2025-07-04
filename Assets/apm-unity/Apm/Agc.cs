@@ -1,7 +1,7 @@
 ﻿using System;
-using AudioProcessingModuleCs.Media.Jpeg;
+using Apm.Media.Jpeg;
 
-namespace AudioProcessingModuleCs.Media.Dsp.WebRtc
+namespace Apm.Media.Dsp.WebRtc
 {
 	/// <summary>
 	/// contains AGC state variables

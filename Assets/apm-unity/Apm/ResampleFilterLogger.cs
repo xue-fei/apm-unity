@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace AudioProcessingModuleCs.Media.Dsp
+namespace Apm.Media.Dsp
 {
     public class ResampleFilterLogger
     {

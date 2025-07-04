@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AudioProcessingModuleCs.Media.Dsp
+namespace Apm.Media.Dsp
 {
     public class NullAudioFilter : IAudioTwoWayFilter
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-namespace AudioProcessingModuleCs.Media.Dsp
+namespace Apm.Media.Dsp
 {
 	/// <summary>
 	/// The Resampler class resamples inbound audio data from one format (e.g., 24-bit) to another (e.g., 16-bit).

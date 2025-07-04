@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace AudioProcessingModuleCs.Media.Dsp.WebRtc
+namespace Apm.Media.Dsp.WebRtc
 {
 	internal class WebRtcUtil
 	{

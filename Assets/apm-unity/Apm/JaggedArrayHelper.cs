@@ -1,5 +1,5 @@
 ﻿
-namespace AudioProcessingModuleCs.Media.Jpeg
+namespace Apm.Media.Jpeg
 {
 	public static class JaggedArrayHelper
 	{

@@ -1,5 +1,5 @@
 ﻿using System;
-namespace AudioProcessingModuleCs.Media.Dsp
+namespace Apm.Media.Dsp
 {
     /// <summary>
     /// A generic interface for audio filters.
