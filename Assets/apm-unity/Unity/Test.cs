@@ -9,24 +9,15 @@ using UnityEngine;
 public class Test : MonoBehaviour
 {
     public MicrophoneWebGL microphoneWebGL;
-    public AudioPlayer audioPlayer;
     WebRtcFilter wrf;
-
-    public Queue<float> playData = new Queue<float>();
-    public Queue<float> recordData = new Queue<float>();
+    bool isPlay = false;
 
     private void Awake()
     {
-        audioPlayer = GetComponent<AudioPlayer>();
         microphoneWebGL = GetComponent<MicrophoneWebGL>();
         microphoneWebGL.dataEvent.AddListener(OnData);
-        wrf = new WebRtcFilter(100, 100, new AudioFormat(16000), new AudioFormat(16000),
+        wrf = new WebRtcFilter(240, 100, new AudioFormat(16000), new AudioFormat(16000),
             true, true, true);
-        float[] data = ReadMono16kWavToFloat(Application.streamingAssetsPath + "/mix.wav");
-        foreach (float x in data)
-        {
-            playData.Enqueue(x);
-        }
     }
 
     // Start is called before the first frame update
@@ -48,14 +39,8 @@ public class Test : MonoBehaviour
         //} while (moreFrames);
 
         microphoneWebGL.Begin();
+        isPlay = true;
     }
-
-    int index;
-    const int frameCount = 320;
-    float[] tempPlay = new float[frameCount];
-    float[] tempRecord = new float[frameCount];
-    byte[] playBytes;
-    byte[] recordBytes;
 
     const int frameCountByte = 320;
     short[] cancelBuffer = new short[frameCountByte];
@@ -64,58 +49,49 @@ public class Test : MonoBehaviour
     List<float> ogFloats = new List<float>();
     List<float> ecFloats = new List<float>();
 
-    /// <summary>
-    ///  默认20ms一次 每次320个
-    /// </summary>
-    private void FixedUpdate()
-    {
-        if (playData != null
-            && audioPlayer != null
-            && microphoneWebGL.isRecording
-            && playData.Count > 0
-            && recordData.Count > 0)
-        {
-            index = 0;
-            for (int i = 0; i < frameCount; i++)
-            {
-                if (playData.Count > 0 && recordData.Count > 0)
-                {
-                    tempPlay[index] = playData.Dequeue();
-                    tempRecord[index] = recordData.Dequeue();
-                    index++;
-                }
-                else
-                {
-
-                }
-            }
-            playBytes = FloatToByte16(tempPlay);
-            wrf.RegisterFramePlayed(playBytes);
-            audioPlayer.AddData(tempPlay);
-
-            ogFloats.AddRange(tempRecord);
-            recordBytes = FloatToByte16(tempRecord);
-            wrf.Write(recordBytes);
-             
-            cancelBuffer = new short[frameCountByte];
-            if (wrf.Read(cancelBuffer, out moreFrames))
-            { 
-                ecFloats.AddRange(ShortToFloat(cancelBuffer));
-            }
-        }
-    }
-
     // Update is called once per frame
     void Update()
     {
 
     }
 
+    float[] tempFar = new float[160];
+    byte[] bytesFar;
+    byte[] bytesNear;
     void OnData(float[] data)
     {
-        foreach (float x in data)
+        ogFloats.AddRange(data);
+        if (farQueue.Count >= 160)
         {
-            recordData.Enqueue(x);
+            for (int i = 0; i < tempFar.Length; i++)
+            {
+                tempFar[i] = farQueue.Dequeue();
+            }
+            bytesFar = FloatToByte16(tempFar);
+            //Debug.Log("bytesFar.Length:" + bytesFar.Length);
+            wrf.RegisterFramePlayed(bytesFar);
+            bytesNear = FloatToByte16(data);
+            wrf.Write(bytesNear); 
+            cancelBuffer = new short[frameCountByte];
+            if (wrf.Read(cancelBuffer, out moreFrames))
+            {
+                ecFloats.AddRange(ShortToFloat(cancelBuffer));
+                Debug.Log("moreFrames:" + moreFrames);
+            }
+        }
+    }
+
+    Queue<float> farQueue = new Queue<float>();
+    private void OnAudioFilterRead(float[] data, int channels)
+    {
+        if (isPlay)
+        {
+            //Debug.Log(data.Length);
+            for (int i = 0; i < data.Length; i++)
+            {
+                //data[i] = data[i] * 0.3f;
+                farQueue.Enqueue(data[i]);
+            }
         }
     }
 
@@ -261,7 +237,9 @@ public class Test : MonoBehaviour
 
     private void OnDestroy()
     {
-        SaveWav(1, 16000, ecFloats.ToArray(), Application.streamingAssetsPath + "/ec.wav");
-        SaveWav(1, 16000, ogFloats.ToArray(), Application.streamingAssetsPath + "/og.wav");
+        isPlay = false;
+
+        SaveWav(1, 16000, ecFloats.ToArray(), Application.dataPath + "/ec.wav");
+        SaveWav(1, 16000, ogFloats.ToArray(), Application.dataPath + "/og.wav");
     }
 }

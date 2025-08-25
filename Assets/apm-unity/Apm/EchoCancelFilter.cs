@@ -52,8 +52,13 @@ namespace Apm.Media.Dsp
 			SamplesPerSecond = recordedAudioFormat.SamplesPerSecond;
 			recorded = new short[SamplesPerFrame];
 
-			// Configure the latency queue.
-			QueueSize = Math.Max(systemLatency / recordedAudioFormat.MillisecondsPerFrame, 1);
+			UnityEngine.Debug.Log("SystemLatency:" + SystemLatency);
+            UnityEngine.Debug.Log("FilterLength:" + FilterLength);
+            UnityEngine.Debug.Log("SamplesPerFrame:" + SamplesPerFrame);
+            UnityEngine.Debug.Log("SamplesPerSecond:" + SamplesPerSecond);
+
+            // Configure the latency queue.
+            QueueSize = Math.Max(systemLatency / recordedAudioFormat.MillisecondsPerFrame, 1);
 			maxQueueSize = QueueSize + 1;
 			playedQueue = new Queue<short[]>();
 
